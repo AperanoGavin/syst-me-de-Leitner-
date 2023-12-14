@@ -23,7 +23,8 @@ class CardController extends AbstractController
                 'id' => $card->getId(),
                 'question' => $card->getQuestion(),
                 'answer' => $card->getAnswer(),
-                'tag' => $card->getTag()            ];
+                'tag' => $card->getTag()            
+            ];
         }, $cards);
 
         return $this->json($cards);
@@ -55,7 +56,7 @@ class CardController extends AbstractController
             'isValid' => $card->isIsValid()
         ];
 
-        //ne retourner que  is_valid
+        //ne retourne que  is_valid
         return $this->json($card);
         }
 
