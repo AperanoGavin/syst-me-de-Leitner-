@@ -1,0 +1,109 @@
+{
+	"info": {
+		"_postman_id": "d71c9130-9242-4ba5-9eb7-3974e76953a5",
+		"name": "ApiSymfony",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "20191681"
+	},
+	"item": [
+		{
+			"name": "post_cards",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"question\":\"test\",\"answer\":\"test\",\"tag\":\"test\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8000/cards"
+			},
+			"response": []
+		},
+		{
+			"name": "cards_answer_with_id",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"url": "http://127.0.0.1:8000/cards/1/answer"
+			},
+			"response": []
+		},
+		{
+			"name": "cards_with_tag",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/cards?tag=test",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"cards"
+					],
+					"query": [
+						{
+							"key": "tag",
+							"value": "test"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "cards_without_tag",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8000/cards"
+			},
+			"response": []
+		},
+		{
+			"name": "cards_quizz_with_date",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/cards/quizz?date=2023-11-03",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"cards",
+						"quizz"
+					],
+					"query": [
+						{
+							"key": "date",
+							"value": "2023-11-03"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

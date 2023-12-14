@@ -48,4 +48,44 @@ class CardControllerTest extends  WebTestCase
     }
 
 
+    public function testGetAllCardsWithoutTags()
+    {
+        $client = static::createClient();
+        $client->request('GET', 'http://localhost:8000/cards');
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+    }
+
+    public function testGetAllCardsWithTags()
+    {
+        $client = static::createClient();
+        $client->request('GET', 'http://localhost:8000/cards?tag=test');
+
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        $responseContent = json_decode($client->getResponse()->getContent(), true);
+
+        foreach ($responseContent as $card) {
+            $this->assertArrayHasKey('category', $card);
+            $this->assertArrayHasKey('question', $card);
+            $this->assertArrayHasKey('answer', $card);
+            $this->assertArrayHasKey('tag', $card);
+        }
+
+    }
+
+    public function testPostCards()
+    {
+        $client = static::createClient();
+        $client->request('POST', 'http://localhost:8000/cards', [], [], ['CONTENT_TYPE' => 'application/json'], '{"question":"test","answer":"test","tag":"test"}');
+
+        $this->assertEquals(201, $client->getResponse()->getStatusCode());
+    }
+
+
+
 }
+
+
+

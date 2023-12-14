@@ -4,7 +4,7 @@ nelmio_cors:
         origin_regex: true
         allow_origin: ['*']
         allow_headers: ['*']
-        allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'DELETE']
+        allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'DELETE' , 'PATCH']
         expose_headers: ['Link']
         max_age: 3600
     paths:
