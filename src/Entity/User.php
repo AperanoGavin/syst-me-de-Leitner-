@@ -5,6 +5,9 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -13,7 +16,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[ApiResource()]
+#[ApiResource(
+)]
+#[ApiFilter(SearchFilter::class, properties: ['email' => 'exact'])]
 
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -22,9 +27,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     #[Groups(['conference:list', 'conference:item'])]
     private ?int $id = null;
-
+    
     #[ORM\Column(length: 180, unique: true)]
     #[Groups(['conference:list', 'conference:item'])]
+    
     private ?string $email = null;
 
     #[ORM\Column]
