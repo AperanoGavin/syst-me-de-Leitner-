@@ -6,8 +6,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 Class ApiUserService{
 
-    private $uri = 'http://localhost:8000/api/users';
-   public function __construct( private HttpClientInterface $client,) {
+    private $uri = 'http://localhost:8000/api/users?';
+   public function __construct( private HttpClientInterface $client, string $uri) {
          $this->client = $client;
          $this->uri = $uri;
     }
@@ -15,7 +15,8 @@ Class ApiUserService{
     public function getUser($email){
         $response = $this->client->request(
             'GET',
-            $this->uri.$email
+            $this->uri,
+            [$email]
         );
         $content = $response->toArray();
         return $content;
