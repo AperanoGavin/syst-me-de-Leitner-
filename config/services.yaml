@@ -20,5 +20,11 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    App\Service\ApiUserService:
+        arguments:
+            $apiUrl: '%env(API_URL)%'
+            #$apiUser: '%env(API_USER)%'
+            #$apiPassword: '%env(API_PASSWORD)%'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
