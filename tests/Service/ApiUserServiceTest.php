@@ -2,7 +2,7 @@
 
 namespace App\Tests\Service;
 
-use app\Service\ApiUserService;
+use App\Service\ApiUserService;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class ApiUserServiceTest extends KernelTestCase
@@ -10,15 +10,14 @@ class ApiUserServiceTest extends KernelTestCase
     public function testGetUserByEmail()
     {
         self::bootKernel();
-        $container = static::getContainer();
-
+        $container = static::getContainer();  
         $apiService = $container->get(ApiUserService::class);
-        $api = $apiService->getUser('aude');
 
+        $api = $apiService->getUser('audesandrine6@gmail.com');
         $result = trim(ob_get_clean());
-
+        //dd($api);
         //ce qu'il y'a dans la variable $result est égal à ce qu'il y'a dans la variable $api
-        $this->assertEquals($api, $result);
+        $this->assertEquals($api[0]['email'], $result);
         
         return $result;
     }

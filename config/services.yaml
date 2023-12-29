@@ -21,8 +21,13 @@ services:
             - '../src/Kernel.php'
 
     App\Service\ApiUserService:
+        #alias: App\Service\ApiUserService
+        public: true
         arguments:
-            $apiUrl: '%env(API_URL)%'
+            #$client: '@your_http_client_service'
+            $uri: 'https://localhost:8002/api/users?'
+        #arguments:
+            #$apiUrl: '%env(API_URL)%'
             #$apiUser: '%env(API_USER)%'
             #$apiPassword: '%env(API_PASSWORD)%'
 
