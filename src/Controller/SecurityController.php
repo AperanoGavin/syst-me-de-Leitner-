@@ -8,19 +8,23 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use App\Service\ApiUserService;
 
 class SecurityController extends AbstractController
 {
     private $em;
 
-    public function __construct(EntityManagerInterface $em ){
+    private $ApiUserService ;
+
+    public function __construct(EntityManagerInterface $em , ApiUserService $ApiUserService ){
         $this->em =$em ;
+        $this->ApiUserService = $ApiUserService;
     }
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils , Request $request ): Response
     {
-        
-       // $userAll = $this->apiUser ; 
+       
+        // $userAll = $this->apiUser ; 
         // if ($this->getUser()) {
         //     return $this->redirectToRoute('target_path');
         // }
