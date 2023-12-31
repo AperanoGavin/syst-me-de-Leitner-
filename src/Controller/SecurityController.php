@@ -23,7 +23,9 @@ class SecurityController extends AbstractController
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils , Request $request ): Response
     {
-       
+        //$this->generateUrl('my_route',  array('type' => 'param'), true);
+       // dd($this->generateUrl('app_login',  array('type' => 'param'), true));
+       dd($this->doRenderView());
         // $userAll = $this->apiUser ; 
         // if ($this->getUser()) {
         //     return $this->redirectToRoute('target_path');
