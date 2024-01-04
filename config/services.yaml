@@ -25,7 +25,7 @@ services:
         public: true
         arguments:
             #$client: '@your_http_client_service'
-            $uri: 'https://localhost:8002/api/users?'
+            $uri: 'https://localhost:8000/api/users?'
         #arguments:
             #$apiUrl: '%env(API_URL)%'
             #$apiUser: '%env(API_USER)%'

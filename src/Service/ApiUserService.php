@@ -30,4 +30,21 @@ Class ApiUserService {
        
         return $content['hydra:member']; 
     }
+
+
+    public function getToken(String $email , String $password)
+    {
+        $response = $this->client->request(
+            'POST',
+            "https://localhost:8000/api/login_check",
+    ['json' => [
+                'email' => $email,
+                'password' => $password,
+            ]]
+
+        );
+        $content = $response->getContent();
+        $content = json_decode($content , true);
+        dd($content['hydra:member']);
+    }
 }

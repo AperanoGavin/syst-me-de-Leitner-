@@ -9,6 +9,8 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Service\ApiUserService;
+use App\Entity\User;
+use App\Form\LoginType;
 
 class SecurityController extends AbstractController
 {
@@ -24,19 +26,38 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils , Request $request ): Response
     {
         //$this->generateUrl('my_route',  array('type' => 'param'), true);
-       // dd($this->generateUrl('app_login',  array('type' => 'param'), true));
-       dd($this->doRenderView());
         // $userAll = $this->apiUser ; 
         // if ($this->getUser()) {
         //     return $this->redirectToRoute('target_path');
         // }
+        $user = new User;
+        $form = $this->createForm(LoginType::class , $user);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
+            try{
+                $email = $request->request->all()['login']['email'];
+                $password = $request->request->all()['login']['password'];
+                $users = $this->ApiUserService->getUser($email);
+            }catch(\Exception $e){
+                $this->addFlash('message', 'User not found');
+                return $this->redirectToRoute('app_login');
+            }
+         //$token = $this->ApiUserService->getToken( $email , $password);
+        // dd($token);
+
+         dd($users);
+        }
+        
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->render('security/login.html.twig', 
+        ['last_username' => $lastUsername, 'error' => $error,
+                      'form' =>$form->createView()
+        ]);
     }
 
     #[Route(path: '/logout', name: 'app_logout')]
