@@ -21,7 +21,7 @@ class ApiUserServiceTest extends KernelTestCase
         
         return $result;
     }
-   /*   public function testSomething(): void
+    /*  public function testSomething(): void
     {
         $kernel = self::bootKernel();
 
