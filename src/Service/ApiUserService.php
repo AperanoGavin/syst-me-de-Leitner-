@@ -32,7 +32,7 @@ Class ApiUserService {
     }
 
 
-    public function getToken(String $email , String $password)
+   /*  public function getToken(String $email , String $password)
     {
         $response = $this->client->request(
             'POST',
@@ -46,5 +46,5 @@ Class ApiUserService {
         $content = $response->getContent();
         $content = json_decode($content , true);
         dd($content['hydra:member']);
-    }
+    } */
 }

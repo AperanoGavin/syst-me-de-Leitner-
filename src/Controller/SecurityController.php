@@ -11,6 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Service\ApiUserService;
 use App\Entity\User;
 use App\Form\LoginType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
 
 class SecurityController extends AbstractController
 {
@@ -37,17 +40,19 @@ class SecurityController extends AbstractController
             try{
                 $email = $request->request->all()['login']['email'];
                 $password = $request->request->all()['login']['password'];
+                $token = $request->request->all()['login']['_token'];
                 $users = $this->ApiUserService->getUser($email);
             }catch(\Exception $e){
                 $this->addFlash('message', 'User not found');
                 return $this->redirectToRoute('app_login');
             }
-         //$token = $this->ApiUserService->getToken( $email , $password);
-        // dd($token);
 
-         dd($users);
+        $session = $request->getSession();
+        $session->set('token', $token);
+        //dd($session);
+
+        //dd($users);
         }
-        
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -61,8 +66,10 @@ class SecurityController extends AbstractController
     }
 
     #[Route(path: '/logout', name: 'app_logout')]
-    public function logout(): void
+    public function logout(SessionInterface $session): RedirectResponse
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        $session->clear();
+        return new RedirectResponse("https://localhost:8000/");
+       // throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }
