@@ -41,7 +41,7 @@ class SecurityController extends AbstractController
                 $email = $request->request->all()['login']['email'];
                 $password = $request->request->all()['login']['password'];
                 $token = $request->request->all()['login']['_token'];
-                $users = $this->ApiUserService->getUser($email);
+                //$users = $this->ApiUserService->getUser($email);
             }catch(\Exception $e){
                 $this->addFlash('message', 'User not found');
                 return $this->redirectToRoute('app_login');
