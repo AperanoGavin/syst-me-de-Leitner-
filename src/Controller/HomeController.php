@@ -21,4 +21,13 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
+
+    #[Route('/sheet' , name: 'app_sheet')]
+    public function allSheet(Request $request): Response
+    {
+        
+        return $this->render('home/sheet.html.twig', [
+            'controller_name' => 'HomeController',
+        ]);
+    }
 }
