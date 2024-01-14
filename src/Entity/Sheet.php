@@ -26,6 +26,9 @@ class Sheet
     #[ORM\Column(nullable: true)]
     private ?bool $is_good = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $new = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -63,6 +66,18 @@ class Sheet
     public function setIsGood(?bool $is_good): static
     {
         $this->is_good = $is_good;
+
+        return $this;
+    }
+
+    public function isNew(): ?bool
+    {
+        return $this->new;
+    }
+
+    public function setNew(?bool $new): static
+    {
+        $this->new = $new;
 
         return $this;
     }
