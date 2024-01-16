@@ -29,6 +29,9 @@ class Sheet
     #[ORM\Column(nullable: true)]
     private ?bool $new = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $level = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -78,6 +81,18 @@ class Sheet
     public function setNew(?bool $new): static
     {
         $this->new = $new;
+
+        return $this;
+    }
+
+    public function getLevel(): ?string
+    {
+        return $this->level;
+    }
+
+    public function setLevel(string $level): static
+    {
+        $this->level = $level;
 
         return $this;
     }

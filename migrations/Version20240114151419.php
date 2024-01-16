@@ -20,7 +20,7 @@ final class Version20240114151419 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE sheet ADD new BOOLEAN  NULL');
+        //$this->addSql('ALTER TABLE sheet ADD new BOOLEAN  NULL');
     }
 
     public function down(Schema $schema): void

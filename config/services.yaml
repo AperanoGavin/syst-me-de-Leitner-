@@ -31,5 +31,12 @@ services:
             #$apiUser: '%env(API_USER)%'
             #$apiPassword: '%env(API_PASSWORD)%'
 
+    App\Service\ApiSheetService:
+        #alias: App\Service\ApiUserService
+        public: true
+        arguments:
+            #$client: '@your_http_client_service'
+            $uri: 'https://localhost:8000/api/sheets?'      
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
