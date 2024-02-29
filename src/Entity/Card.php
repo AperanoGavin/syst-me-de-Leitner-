@@ -14,12 +14,12 @@ use App\Entity\CategoryInterface;
 
 #[ORM\Entity(repositoryClass: CardRepository::class)]
 #[ApiResource(
-    operations: [
-        new Get(),
-        new GetCollection(),
-        new Post(),
-    ])
-]
+    normalizationContext: ['groups' => ['get']],
+    denormalizationContext: ['groups' => ['post']]
+)]
+#[Get]
+#[Post]
+
 
 class Card
 {
@@ -29,19 +29,19 @@ class Card
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read'])]
+    #[Groups(['get'])]
     private string $category;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read', 'write'])]
+    #[Groups(['get', 'post'])]
     private string $question;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read', 'write'])]
+    #[Groups(['get', 'post'])]
     private string $answer;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['read', 'write'])]
+    #[Groups(['get', 'post'])]
     private string $tag;
 
     public function __construct()
@@ -54,13 +54,11 @@ class Card
         return $this->id;
     }
 
-    #[Groups(['read'])]
     public function getCategory(): string
     {
         return $this->category;
     }
 
-    #[Groups(['write'])]
     public function setCategory(string $category): self
     {
         $this->category = $category;
@@ -68,13 +66,11 @@ class Card
         return $this;
     }
 
-    #[Groups(['read'])]
     public function getQuestion(): string
     {
         return $this->question;
     }
 
-    #[Groups(['write'])]
     public function setQuestion(string $question): self
     {
         $this->question = $question;
@@ -82,13 +78,11 @@ class Card
         return $this;
     }
 
-    #[Groups(['read'])]
     public function getAnswer(): string
     {
         return $this->answer;
     }
 
-    #[Groups(['write'])]
     public function setAnswer(string $answer): self
     {
         $this->answer = $answer;
@@ -96,13 +90,11 @@ class Card
         return $this;
     }
 
-    #[Groups(['read'])]
     public function getTag(): string
     {
         return $this->tag;
     }
 
-    #[Groups(['write'])]
     public function setTag(string $tag): self
     {
         $this->tag = $tag;
