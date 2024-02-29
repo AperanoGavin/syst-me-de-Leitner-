@@ -10,6 +10,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use App\Repository\CardRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\CategoryInterface;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+
 
 
 #[ORM\Entity(repositoryClass: CardRepository::class)]
@@ -20,6 +23,8 @@ use App\Entity\CategoryInterface;
 #[Get]
 #[Post]
 #[GetCollection]
+#[ApiFilter(SearchFilter::class, properties: ['tag' => 'exact'])]
+
 
 
 class Card
