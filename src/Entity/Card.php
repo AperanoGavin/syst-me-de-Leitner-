@@ -19,6 +19,7 @@ use App\Entity\CategoryInterface;
 )]
 #[Get]
 #[Post]
+#[GetCollection]
 
 
 class Card
