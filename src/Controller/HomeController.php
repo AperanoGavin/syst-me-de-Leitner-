@@ -29,9 +29,7 @@ class HomeController extends AbstractController
     {
         $api_sheet = new ApiSheetService();
         $first = $api_sheet->getFisrtSheet();
-        dd($first);
 
-        dd($request);
 
         return $this->render('home/sheet.html.twig', [
             'controller_name' => 'HomeController',
