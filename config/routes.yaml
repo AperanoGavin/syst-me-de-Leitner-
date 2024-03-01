@@ -7,3 +7,8 @@ controllers:
 
 api_login_check:
     path: /api/login_check
+
+api_platform:
+    resource: '../src/Entity/'
+    type: api_platform
+    prefix: '/'

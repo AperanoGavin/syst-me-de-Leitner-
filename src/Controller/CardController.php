@@ -51,8 +51,13 @@ class CardController extends AbstractController
         // Save changes to the database
         $entityManager->flush();
 
-        return new Response("Answer updated successfully", Response::HTTP_OK);
-    }
+        $card = [
+            'isValid' => $card->isIsValid()
+        ];
+
+        //ne retourner que  is_valid
+        return $this->json($card);
+        }
 
 
 

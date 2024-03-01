@@ -10,7 +10,7 @@ use App\Service\ApiSheetService;
 
 class HomeController extends AbstractController
 {
-    #[Route('/', name: 'app_home')]
+    #[Route('/home', name: 'app_home')]
     public function index(Request $request): Response
     {
        //si il n'y a pas de token jwt dans la session alors on redirige vers la page de login
