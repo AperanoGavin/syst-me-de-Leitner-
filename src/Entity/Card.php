@@ -57,14 +57,15 @@ class Card
     private ?string $date ;
 
     #[ORM\Column]
-    private ?bool $answeredCorrectly ;
+    private bool $isValid ;
 
+ 
 
     public function __construct()
     {
         $this->category = CategoryInterface::CATEGORY_FIRST; // Initialisation par défaut de la catégorie
         $this->date = date('Y-m-d'); // Initialisation par défaut de la date du jour si non renseignée
-        $this->answeredCorrectly = false; // Initialisation par défaut de la réponse à faux
+        $this->isValid = false; // Initialisation par défaut de la réponse à faux
 
     }
 
@@ -133,17 +134,19 @@ class Card
         return $this;
     }
 
-    public function isAnsweredCorrectly(): ?bool
+    public function isIsValid(): ?bool
     {
-        return $this->answeredCorrectly;
+        return $this->isValid;
     }
 
-    public function setAnsweredCorrectly(bool $answeredCorrectly): static
+    public function setIsValid(bool $isValid): static
     {
-        $this->answeredCorrectly = $answeredCorrectly;
+        $this->isValid = $isValid;
 
         return $this;
     }
+
+
 
 
 }

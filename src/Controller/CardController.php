@@ -43,9 +43,10 @@ class CardController extends AbstractController
             return new Response("Card not found", Response::HTTP_NOT_FOUND);
         }
 
-        // Update la reponse
-        $answeredCorrectly = isset($data['answeredCorrectly']) ? $data['answeredCorrectly'] : false;
-        $card->setAnsweredCorrectly($answeredCorrectly);
+        // Update la 
+        $answeredCorrectly = isset($data['isValid']) ? $data['isValid'] : false;
+        
+        $card->setIsValid($answeredCorrectly);
 
         // Save changes to the database
         $entityManager->flush();
