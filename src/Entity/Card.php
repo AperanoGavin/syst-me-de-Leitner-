@@ -6,20 +6,28 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
+use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Serializer\Annotation\Groups;
+use  ApiPlatform\Metadata\ApiProperty;
 use App\Repository\CardRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\CategoryInterface;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Controller\CardController;
+
 
 
 #[ORM\Entity(repositoryClass: CardRepository::class)]
 #[ApiResource(
     normalizationContext: ['groups' => ['get']],
-    denormalizationContext: ['groups' => ['post']]
+    denormalizationContext: ['groups' => ['post']],
 )]
 #[Get]
 #[Post]
 #[GetCollection]
+#[ApiFilter(SearchFilter::class, properties: ['tag' => 'exact' ,'date'=> 'exact'])]
 
 
 class Card
@@ -45,9 +53,20 @@ class Card
     #[Groups(['get', 'post'])]
     private string $tag;
 
+    #[ORM\Column(length: 255)]
+    private ?string $date ;
+
+    #[ORM\Column]
+    private bool $isValid ;
+
+ 
+
     public function __construct()
     {
         $this->category = CategoryInterface::CATEGORY_FIRST; // Initialisation par défaut de la catégorie
+        $this->date = date('Y-m-d'); // Initialisation par défaut de la date du jour si non renseignée
+        $this->isValid = false; // Initialisation par défaut de la réponse à faux
+
     }
 
     public function getId(): ?int
@@ -102,4 +121,32 @@ class Card
 
         return $this;
     }
+
+    public function getDate(): ?string
+    {
+        return $this->date;
+    }
+
+    public function setDate(string $date): static
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function isIsValid(): ?bool
+    {
+        return $this->isValid;
+    }
+
+    public function setIsValid(bool $isValid): static
+    {
+        $this->isValid = $isValid;
+
+        return $this;
+    }
+
+
+
+
 }

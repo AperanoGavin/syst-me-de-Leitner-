@@ -21,6 +21,28 @@ class CardRepository extends ServiceEntityRepository
         parent::__construct($registry, Card::class);
     }
 
+    /**
+     * @param string|null $date
+     *
+     * @return Card[]
+     */
+    public function findCardByDateOrToday($date = null)
+    {
+        $queryBuilder = $this->createQueryBuilder('c');
+
+        if ($date) {
+            $dateObject = \DateTime::createFromFormat('Y-m-d', $date);
+            $queryBuilder->where('c.date = :date')
+                ->setParameter('date', $dateObject->format('Y-m-d'));
+        } else {
+            $today = new \DateTime();
+            $queryBuilder->where('c.date = :today')
+                ->setParameter('today', $today->format('Y-m-d'));
+        }
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return Card[] Returns an array of Card objects
 //     */

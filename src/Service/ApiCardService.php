@@ -3,7 +3,8 @@ namespace App\Service;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ApiCardService{
-    private string $uri ;
+    private string $uri  ;
+
     public function __construct( private HttpClientInterface $client, string $uri) {
           $this->client = $client;
           $this->uri = $uri;
@@ -17,12 +18,7 @@ class ApiCardService{
         
         $content = $response->getContent();
         $content = json_decode($content , true);
-
-        if(empty($content['hydra:member'])){
-            //throw new \Exception('User not found');
-            return [];
-        }
        
-        return $content['hydra:member']; 
+        return $content; 
     }
 }
