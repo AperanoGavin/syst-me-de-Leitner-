@@ -11,7 +11,7 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         // Chemin vers votre fichier CSV
-        $filename = './data_1.csv';
+        $filename = './data_good.csv';
 
         // Vérifie si le fichier existe
         if (!file_exists($filename)) {

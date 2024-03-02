@@ -41,7 +41,6 @@ class CardController extends AbstractController
 
         $entityManager = $managerRegistry->getManager();
         $card = $entityManager->getRepository(Card::class)->find($cardId);
-
         // verif si la carte existe
         if (!$card) {
             return new Response("Card not found", Response::HTTP_NOT_FOUND);
