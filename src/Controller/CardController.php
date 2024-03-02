@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Card;
+use App\Entity\CategoryInterface;
+use App\Entity\CategoryEnum;
 
 
 class CardController extends AbstractController
@@ -18,9 +20,13 @@ class CardController extends AbstractController
         $date = $request->query->get('date');
         $cardRepository = $managerRegistry->getRepository(Card::class);
         $cards = $cardRepository->findCardByDateOrToday($date);
+        $cards = array_filter($cards, function($card){
+            return $card->getCategory() !== CategoryEnum::DONE;
+        });
         $cards = array_map(function($card){
             return [
                 'id' => $card->getId(),
+                'category' => $card->getCategory(),
                 'question' => $card->getQuestion(),
                 'answer' => $card->getAnswer(),
                 'tag' => $card->getTag()            
@@ -38,7 +44,6 @@ class CardController extends AbstractController
 
         $entityManager = $managerRegistry->getManager();
         $card = $entityManager->getRepository(Card::class)->find($cardId);
-
         // verif si la carte existe
         if (!$card) {
             return new Response("Card not found", Response::HTTP_NOT_FOUND);
@@ -47,20 +52,86 @@ class CardController extends AbstractController
         // Update la 
         $answeredCorrectly = isset($data['isValid']) ? $data['isValid'] : false;
         
-        $card->setIsValid($answeredCorrectly);
+        //$card->setIsValid($answeredCorrectly);
 
         // Save changes to the database
-        $entityManager->flush();
+        //$entityManager->flush();
 
-        $card = [
-            'isValid' => $card->isIsValid()
-        ];
 
-        //ne retourne que  is_valid
-        return $this->json($card);
+        if($answeredCorrectly === true){
+            $category = $card->getCategory();
+            $categoryEnum = CategoryEnum::from($category);
+            $lastAnsweredAt = new \DateTime($card->getdate());
+            $now = new \DateTime();
+            $daysSinceLastAnswer = $now->diff($lastAnsweredAt)->days;
+    
+            switch ($categoryEnum) {
+                case CategoryEnum::FIRST:
+                    if ($daysSinceLastAnswer >= 1) {
+                        $nextCategory = $categoryEnum->getNext();
+                        $card->setCategory($nextCategory->value);
+                        $card->setDate($now->format('Y-m-d'));
+                        
+                    }
+                    break;
+                case CategoryEnum::SECOND:
+                    if ($daysSinceLastAnswer >= 2) {
+                        $nextCategory = $categoryEnum->getNext();
+                        $card->setCategory($nextCategory->value);
+                        $card->setDate($now->format('Y-m-d'));
+                    }
+                    break;
+                case CategoryEnum::THIRD:
+                    if ($daysSinceLastAnswer >= 4) {
+                        $nextCategory = $categoryEnum->getNext();
+                        $card->setCategory($nextCategory->value);
+                        $card->setDate($now->format('Y-m-d'));
+                    }
+                    break;
+                case CategoryEnum::FOURTH:
+                    if ($daysSinceLastAnswer >= 8) {
+                        $nextCategory = $categoryEnum->getNext();
+                        $card->setCategory($nextCategory->value);
+                        $card->setDate($now->format('Y-m-d'));
+                    }
+                    break;
+                case CategoryEnum::FIFTH:
+                    if ($daysSinceLastAnswer >= 16) {
+                        $nextCategory = $categoryEnum->getNext();
+                        $card->setCategory($nextCategory->value);
+                        $card->setDate($now->format('Y-m-d'));
+                    }
+                    break;
+                case CategoryEnum::SIXTH:
+                    if ($daysSinceLastAnswer >= 32) {
+                        $nextCategory = $categoryEnum->getNext();
+                        $card->setCategory($nextCategory->value);
+                        $card->setDate($now->format('Y-m-d'));
+                    }
+                    break;
+
+                case CategoryEnum::SEVENTH:
+                    if ($daysSinceLastAnswer >= 64) {
+                        $nextCategory = $categoryEnum->getNext();
+                        $card->setCategory($nextCategory->value);
+                        $card->setDate($now->format('Y-m-d'));
+                    }
+                    break;
+                case CategoryEnum::DONE:
+                    //$entityManager->remove($card);
+                    break;
+
+            }
+    
+            $entityManager->flush();
         }
 
 
+        
+
+        return $this->json($card) 
+        ->setStatusCode(Response::HTTP_NO_CONTENT);
+        }
 
 
 }

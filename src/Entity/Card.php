@@ -35,7 +35,7 @@ class Card
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private ?string $id = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['get'])]
@@ -56,22 +56,24 @@ class Card
     #[ORM\Column(length: 255)]
     private ?string $date ;
 
-    #[ORM\Column]
-    private bool $isValid ;
-
- 
 
     public function __construct()
     {
         $this->category = CategoryInterface::CATEGORY_FIRST; // Initialisation par défaut de la catégorie
         $this->date = date('Y-m-d'); // Initialisation par défaut de la date du jour si non renseignée
-        $this->isValid = false; // Initialisation par défaut de la réponse à faux
 
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
+    }
+
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getCategory(): string
@@ -134,17 +136,6 @@ class Card
         return $this;
     }
 
-    public function isIsValid(): ?bool
-    {
-        return $this->isValid;
-    }
-
-    public function setIsValid(bool $isValid): static
-    {
-        $this->isValid = $isValid;
-
-        return $this;
-    }
 
 
 
