@@ -21,6 +21,7 @@ class CardController extends AbstractController
         $cards = array_map(function($card){
             return [
                 'id' => $card->getId(),
+                'category' => $card->getCategory(),
                 'question' => $card->getQuestion(),
                 'answer' => $card->getAnswer(),
                 'tag' => $card->getTag()            
