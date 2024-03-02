@@ -20,6 +20,9 @@ class CardController extends AbstractController
         $date = $request->query->get('date');
         $cardRepository = $managerRegistry->getRepository(Card::class);
         $cards = $cardRepository->findCardByDateOrToday($date);
+        $cards = array_filter($cards, function($card){
+            return $card->getCategory() !== CategoryEnum::DONE;
+        });
         $cards = array_map(function($card){
             return [
                 'id' => $card->getId(),
@@ -114,7 +117,7 @@ class CardController extends AbstractController
                         $card->setDate($now->format('Y-m-d'));
                     }
                     break;
-                case CategoryEnum::NONE:
+                case CategoryEnum::DONE:
                     //$entityManager->remove($card);
                     break;
 

@@ -9,7 +9,7 @@ enum CategoryEnum: string {
     case FIFTH = 'FIFTH';
     case SIXTH = 'SIXTH';
     case SEVENTH = 'SEVENTH';
-    case NONE = 'NONE';
+    case DONE = 'DONE';
 
     public  function getNext(): self
     {
