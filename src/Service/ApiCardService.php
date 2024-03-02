@@ -4,6 +4,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class ApiCardService{
     private string $uri  ;
+
     public function __construct( private HttpClientInterface $client, string $uri) {
           $this->client = $client;
           $this->uri = $uri;
