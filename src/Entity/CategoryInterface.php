@@ -14,15 +14,12 @@ interface CategoryInterface
     public const CATEGORY_SIXTH = 'SIXTH';
     public const CATEGORY_SEVENTH = 'SEVENTH';
     public const NONE = 'NONE';
+
+
+
 }
 
-enum CategoryEnum: string {
-    case FIRST = 'FIRST';
-    case SECOND = 'SECOND';
-    case THIRD = 'THIRD';
-    case FOURTH = 'FOURTH';
-    case FIFTH = 'FIFTH';
-    case SIXTH = 'SIXTH';
-    case SEVENTH = 'SEVENTH';
-    case NONE = 'NONE';
-}
+
+
+
+

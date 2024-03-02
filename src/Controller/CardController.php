@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Card;
+use App\Entity\CategoryInterface;
+use App\Entity\CategoryEnum;
 
 
 class CardController extends AbstractController
@@ -48,20 +50,89 @@ class CardController extends AbstractController
         // Update la 
         $answeredCorrectly = isset($data['isValid']) ? $data['isValid'] : false;
         
-        $card->setIsValid($answeredCorrectly);
+        //$card->setIsValid($answeredCorrectly);
 
         // Save changes to the database
-        $entityManager->flush();
+        //$entityManager->flush();
 
+
+        if($answeredCorrectly === true){
+            $category = $card->getCategory();
+            $categoryEnum = CategoryEnum::from($category);
+            $lastAnsweredAt = new \DateTime($card->getdate());
+            $now = new \DateTime();
+            $daysSinceLastAnswer = $now->diff($lastAnsweredAt)->days;
+    
+            switch ($categoryEnum) {
+                case CategoryEnum::FIRST:
+                    if ($daysSinceLastAnswer >= 1) {
+                        $nextCategory = $categoryEnum->getNext();
+                        $card->setCategory($nextCategory->value);
+                        $card->setDate($now->format('Y-m-d'));
+                        
+                    }
+                    break;
+                case CategoryEnum::SECOND:
+                    if ($daysSinceLastAnswer >= 2) {
+                        $nextCategory = $categoryEnum->getNext();
+                        $card->setCategory($nextCategory->value);
+                        $card->setDate($now->format('Y-m-d'));
+                    }
+                    break;
+                case CategoryEnum::THIRD:
+                    if ($daysSinceLastAnswer >= 4) {
+                        $nextCategory = $categoryEnum->getNext();
+                        $card->setCategory($nextCategory->value);
+                        $card->setDate($now->format('Y-m-d'));
+                    }
+                    break;
+                case CategoryEnum::FOURTH:
+                    if ($daysSinceLastAnswer >= 8) {
+                        $nextCategory = $categoryEnum->getNext();
+                        $card->setCategory($nextCategory->value);
+                        $card->setDate($now->format('Y-m-d'));
+                    }
+                    break;
+                case CategoryEnum::FIFTH:
+                    if ($daysSinceLastAnswer >= 16) {
+                        $nextCategory = $categoryEnum->getNext();
+                        $card->setCategory($nextCategory->value);
+                        $card->setDate($now->format('Y-m-d'));
+                    }
+                    break;
+                case CategoryEnum::SIXTH:
+                    if ($daysSinceLastAnswer >= 32) {
+                        $nextCategory = $categoryEnum->getNext();
+                        $card->setCategory($nextCategory->value);
+                        $card->setDate($now->format('Y-m-d'));
+                    }
+                    break;
+
+                case CategoryEnum::SEVENTH:
+                    if ($daysSinceLastAnswer >= 64) {
+                        $nextCategory = $categoryEnum->getNext();
+                        $card->setCategory($nextCategory->value);
+                        $card->setDate($now->format('Y-m-d'));
+                    }
+                    break;
+                case CategoryEnum::NONE:
+                    $entityManager->remove($card);
+                    break;
+
+            }
+    
+            $entityManager->flush();
+        }
+        
         $card = [
             'isValid' => $card->isIsValid()
         ];
 
-        //ne retourne que  is_valid
-        return $this->json($card);
+        
+
+        return $this->json($card) 
+        ->setStatusCode(Response::HTTP_NO_CONTENT);
         }
-
-
 
 
 }
