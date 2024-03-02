@@ -16,10 +16,4 @@ interface CategoryInterface
     public const NONE = 'NONE';
 
 
-
 }
-
-
-
-
-
