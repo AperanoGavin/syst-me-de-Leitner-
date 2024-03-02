@@ -116,17 +116,14 @@ class CardController extends AbstractController
                     }
                     break;
                 case CategoryEnum::NONE:
-                    $entityManager->remove($card);
+                    //$entityManager->remove($card);
                     break;
 
             }
     
             $entityManager->flush();
         }
-        
-        $card = [
-            'isValid' => $card->isIsValid()
-        ];
+
 
         
 
