@@ -36,7 +36,7 @@ class CardRepository extends ServiceEntityRepository
                 ->setParameter('date', $dateObject->format('Y-m-d'));
         } else {
             $today = new \DateTime();
-            $queryBuilder->where('c.date = :today')
+            $queryBuilder->where('c.date <= :today')
                 ->setParameter('today', $today->format('Y-m-d'));
         }
 

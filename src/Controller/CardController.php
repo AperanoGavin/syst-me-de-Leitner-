@@ -20,21 +20,44 @@ class CardController extends AbstractController
         $date = $request->query->get('date');
         $cardRepository = $managerRegistry->getRepository(Card::class);
         $cards = $cardRepository->findCardByDateOrToday($date);
-        $cards = array_filter($cards, function($card){
-            return $card->getCategory() !== CategoryEnum::DONE;
-        });
-        $cards = array_map(function($card){
-            return [
-                'id' => $card->getId(),
-                'category' => $card->getCategory(),
-                'question' => $card->getQuestion(),
-                'answer' => $card->getAnswer(),
-                'tag' => $card->getTag()            
-            ];
-        }, $cards);
+        $now = new \DateTime();
 
-        return $this->json($cards);
-    }
+        $cards = array_filter($cards, function($card) use ($now) {
+        $createdAt = new \DateTime($card->getDate());
+        $daysSinceCreation = $now->diff($createdAt)->days;
+
+        switch ($card->getCategory()) {
+            case CategoryEnum::FIRST->value:
+                return $daysSinceCreation % 1 == 0;
+            case CategoryEnum::SECOND->value:
+                return $daysSinceCreation % 2 == 0;
+            case CategoryEnum::THIRD->value:
+                return $daysSinceCreation % 4 == 0;
+            case CategoryEnum::FOURTH->value:
+                return $daysSinceCreation % 8 == 0;
+            case CategoryEnum::FIFTH->value:
+                return $daysSinceCreation % 16 == 0;
+            case CategoryEnum::SIXTH->value:
+                return $daysSinceCreation % 32 == 0;
+            case CategoryEnum::SEVENTH->value:
+                return $daysSinceCreation % 64 == 0;
+            default:
+                return $card->getCategory() !== CategoryEnum::DONE->value;
+        }
+    });
+
+    $cards = array_map(function($card){
+        return [
+            'id' => $card->getId(),
+            'category' => $card->getCategory(),
+            'question' => $card->getQuestion(),
+            'answer' => $card->getAnswer(),
+            'tag' => $card->getTag()            
+        ];
+    }, $cards);
+
+    return $this->json($cards);
+}
 
 
     #[Route('/cards/{cardId}/answer', name: 'answer_card', methods: ['PATCH'])]
@@ -67,71 +90,58 @@ class CardController extends AbstractController
     
             switch ($categoryEnum) {
                 case CategoryEnum::FIRST:
-                    if ($daysSinceLastAnswer % 1 ==0 || $category === CategoryEnum::FIRST->value) {
                         $nextCategory = $categoryEnum->getNext();
                         $card->setCategory($nextCategory->value);
                         $nextDate = clone $now;
                         $nextDate->add(new \DateInterval('P2D'));
                         $card->setDate($nextDate->format('Y-m-d'));
 
-                    }
                     break;
                 case CategoryEnum::SECOND:
-                    if ($daysSinceLastAnswer % 2 == 0 ) {
                         $nextCategory = $categoryEnum->getNext();
                         $card->setCategory($nextCategory->value);
                         $nextDate = clone $now;
                         $nextDate->add(new \DateInterval('P4D'));
                         $card->setDate($nextDate->format('Y-m-d'));
-                        
-                    }
+
                     break;
                 case CategoryEnum::THIRD:
-                    if ($daysSinceLastAnswer % 4) {
                         $nextCategory = $categoryEnum->getNext();
                         $card->setCategory($nextCategory->value);
                         $nextDate = clone $now;
                         $nextDate->add(new \DateInterval('P8D'));
                         $card->setDate($nextDate->format('Y-m-d'));
-                        
-                    }
+
                     break;
                 case CategoryEnum::FOURTH:
-                    if ($daysSinceLastAnswer % 8) {
                         $nextCategory = $categoryEnum->getNext();
                         $card->setCategory($nextCategory->value);
                         $nextDate = clone $now;
                         $nextDate->add(new \DateInterval('P16D'));
                         $card->setDate($nextDate->format('Y-m-d'));
-                    }
+
                     break;
                 case CategoryEnum::FIFTH:
-                    if ($daysSinceLastAnswer % 16) {
                         $nextCategory = $categoryEnum->getNext();
                         $card->setCategory($nextCategory->value);
                         $nextDate = clone $now;
                         $nextDate->add(new \DateInterval('P32D'));
                         $card->setDate($nextDate->format('Y-m-d'));
                         
-                    }
                     break;
                 case CategoryEnum::SIXTH:
-                    if ($daysSinceLastAnswer % 32) {
                         $nextCategory = $categoryEnum->getNext();
                         $card->setCategory($nextCategory->value);
                         $nextDate = clone $now;
                         $nextDate->add(new \DateInterval('P64D'));
                         $card->setDate($nextDate->format('Y-m-d'));
-                    }
-                    break;
 
+                    break;
                 case CategoryEnum::SEVENTH:
-                    if ($daysSinceLastAnswer % 64) {
                         $nextCategory = $categoryEnum->getNext();
                         $card->setCategory($nextCategory->value);
 
-                    }
-                    break;
+                   break;
                 case CategoryEnum::DONE:
                     //$entityManager->remove($card);
                     break;
