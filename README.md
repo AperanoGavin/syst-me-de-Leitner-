@@ -3,10 +3,6 @@
 
 ## Project Setup
 
-
-
-
-
 ### Install dependencies
 
 #### - Install Symfony using your favorite package installer:
@@ -43,4 +39,6 @@ symfony serve
 npm run test:unit:dev # or `npm run test:unit` for headless testing
 ```
 
+## Project DDD Architecture
+![Architecture DDD](doc/clean-code-ddd.png)
 
